@@ -24,6 +24,6 @@ We use the test phase pointed at Ava for our tests.  To set options for the test
 ## Run a test
 Here are some valid options.  See Ava doc for test running options.
 - `ENVIRONMENT=PROD yarn test`  // run all the tests
-- `ENVIRONMENT=PROD yarn test -- -m unit:*` // just the unit - test (filtering on name)
-- `ENVIRONMENT=PROD yarn test -- -m input*` // just run the input test (filtering on name)
-- `ENVIRONMENT=PROD yarn test -- -m navigate*` // just run the navigate tests (filtering on name)
+- `ENVIRONMENT=PROD yarn test -m unit:*` // just the unit - test (filtering on name)
+- `ENVIRONMENT=PROD yarn test -m input*` // just run the input test (filtering on name)
+- `ENVIRONMENT=PROD yarn test -m navigate*` // just run the navigate tests (filtering on name)
