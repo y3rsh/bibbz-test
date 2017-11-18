@@ -2,28 +2,73 @@
 > Use puppeteer to navigate around Bibbz looking for errors.
 
 ## Purpose
+
 This suite is to demonstrate using puppeteer to functionally test a website.  I have used Ava as the test runner because it fast(parallel execution out of the box), easy to use, and forward thinking.
 
-## Tools
-- use homebrew or nvm to install node 
-```
-brew install node
-```
-- use homebrew or yarn's instructions to install yarn 
-```
-brew install yarn
-```
-- clone this repo with git
-- locally install the project dependencies in the base directory 
-```
+## Docker path - Preferred
+
+Using docker makes setup more repeatable and portable than a local machine setup.  We are using a dev container setup, mounting in the source repository and putting the yarn cache into a docker volume.  Please see https://github.com/GoogleChrome/puppeteer/blob/7075c4cd4f1dcc42d1c805e63311b2d8df7af2a6/docs/troubleshooting.md
+for Puppeteer container setup discussion.
+
+What the Dockerfile and build.sh are accomplishing:
+
+1. Create a volume for the Docker yarn cache if it does not already exist.
+1. Create and configure a base container that can run node, yarn, and puppeteer
+1. Run the container in interactive mode, mounting the source repository and the yarn cache.
+
+### Instructions
+
+1. Install Docker
+1. Clone this repository with git
+1. Use the build script
+
+  ```bash
+  chmod +x build.sh
+  ./build.sh
+  ```
+Now you are in the container.  We must install with yarn.  The first time this will download everything, but on subsequent container runs, we will have yarn cache because it is persisting as a docker volume.  This cache is different than our local machine yarn cache.
+
+```bash
 yarn install
+ENVIRONMENT=PROD NO_SANDBOX=true yarn test
 ```
+
+> Local changes to our repository show up in the container.  This is the purpose of mounting the repository, so we can use a local text editor and then run the code in the container.
+
+Do I ever need to run locally?
+
+> The only reason to run locally is to debug a difficult problem where you make the browser HEADLESS=false to see what is happening.
+
 ## How the tests work
+
 We use the test phase pointed at Ava for our tests.  To set options for the test we use environment variables.  These can be set through export or on the command line. A testContext object is created in the beforeTest step.  Read the code in test-context.js to understand the possibilities for environment variables. ENVIRONMENT is currently the only required variable.  ENVIRONMENT=PROD is the only valid setting, the other values are examples.
 
 ## Run a test
-Here are some valid options.  See Ava doc for test running options.
-- `ENVIRONMENT=PROD yarn test`  // run all the tests
-- `ENVIRONMENT=PROD yarn test -m unit:*` // just the unit - test (filtering on name)
-- `ENVIRONMENT=PROD yarn test -m input*` // just run the input test (filtering on name)
-- `ENVIRONMENT=PROD yarn test -m navigate*` // just run the navigate tests (filtering on name)
+
+Here are some valid options.  See Ava doc for test running options. NO_SANDBOX=true must be set when running in Docker.
+
+- `ENVIRONMENT=PROD NO_SANDBOX=true yarn test`  // run all the tests
+- `ENVIRONMENT=PROD NO_SANDBOX=true yarn test -m unit:*` // just the unit - test (filtering on name)
+- `ENVIRONMENT=PROD NO_SANDBOX=true yarn test -m input*` // just run the input test (filtering on name)
+- `ENVIRONMENT=PROD NO_SANDBOX=true yarn test -m navigate*` // just run the navigate tests (filtering on name)
+
+## To use locally - deprecated
+
+- use homebrew or nvm to install node 
+
+```bash
+brew install node
+```
+
+- use homebrew or yarn's instructions to install yarn 
+
+```bash
+brew install yarn
+```
+
+- clone this repo with git
+- locally install the project dependencies in the base directory 
+
+```bash
+yarn install
+```
