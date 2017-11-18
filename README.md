@@ -7,8 +7,11 @@ This suite is to demonstrate using puppeteer to functionally test a website.  I 
 
 ## Docker path - Preferred
 
-Using docker makes setup more repeatable and portable than a local machine setup.  We are using a dev container setup, mounting in the source repository and putting the yarn cache into a docker volume.  Please see https://github.com/GoogleChrome/puppeteer/blob/7075c4cd4f1dcc42d1c805e63311b2d8df7af2a6/docs/troubleshooting.md
-for Puppeteer container setup discussion.
+Using docker makes setup more repeatable and portable than a local machine setup.  We are using a dev container setup, mounting in the source repository and putting the yarn cache into a docker volume.  [Please see the Puppeteer repository for this discussion.] (https://github.com/GoogleChrome/puppeteer/blob/7075c4cd4f1dcc42d1c805e63311b2d8df7af2a6/docs/troubleshooting.md)
+
+Do I ever need to run locally?
+
+> The only reason to run locally is to debug difficult problems. If you do, make the browser HEADLESS=false to see what is happening.
 
 What the Dockerfile and build.sh are accomplishing:
 
@@ -24,20 +27,23 @@ What the Dockerfile and build.sh are accomplishing:
 
   ```bash
   chmod +x build.sh
+  ```
+
+  ```bash
   ./build.sh
   ```
-Now you are in the container.  We must install with yarn.  The first time this will download everything, but on subsequent container runs, we will have yarn cache because it is persisting as a docker volume.  This cache is different than our local machine yarn cache.
+
+Now you are in the container.  We must install with yarn on our first entry into the container and after any changes to package.json.  The first time this will download everything, but on subsequent container runs, we will have yarn cache because it is persisting as a docker volume.  This cache is different than our local machine yarn cache.
 
 ```bash
 yarn install
+```
+
+```bash
 ENVIRONMENT=PROD NO_SANDBOX=true yarn test
 ```
 
 > Local changes to our repository show up in the container.  This is the purpose of mounting the repository, so we can use a local text editor and then run the code in the container.
-
-Do I ever need to run locally?
-
-> The only reason to run locally is to debug a difficult problem where you make the browser HEADLESS=false to see what is happening.
 
 ## How the tests work
 
