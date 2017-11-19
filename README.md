@@ -1,4 +1,5 @@
 # Bibbz Testing
+
 > Use puppeteer to navigate around Bibbz looking for errors.
 
 ## Purpose
@@ -7,7 +8,8 @@ This suite is to demonstrate using puppeteer to functionally test a website.  I 
 
 ## Docker path - Preferred
 
-Using docker makes setup more repeatable and portable than a local machine setup.  We are using a dev container setup, mounting in the source repository and putting the yarn cache into a docker volume.  [Please see the Puppeteer repository for this discussion.] (https://github.com/GoogleChrome/puppeteer/blob/7075c4cd4f1dcc42d1c805e63311b2d8df7af2a6/docs/troubleshooting.md)
+Using docker makes setup more repeatable and portable than a local machine setup.  We are using a dev container setup, mounting in the source repository and putting the yarn cache into a docker volume.  [Please see the Puppeteer repository for this discussion.](https://github.com/GoogleChrome/puppeteer/blob/7075c4cd4f1dcc42d1c805e63311b2d8df7af2a6/docs/troubleshooting.md)
+I have removed the un-privileged user from their suggestion as it did not fix the issue of needing --no-sandbox on puppeteer in the container.
 
 Do I ever need to run locally?
 
@@ -51,7 +53,7 @@ We use the test phase pointed at Ava for our tests.  To set options for the test
 
 ## Run a test
 
-Here are some valid options.  See Ava doc for test running options. NO_SANDBOX=true must be set when running in Docker.
+Here are some valid options.  See Ava doc for test running options. NO_SANDBOX=true must be set when running in Docker :sadface:
 
 - `ENVIRONMENT=PROD NO_SANDBOX=true yarn test`  // run all the tests
 - `ENVIRONMENT=PROD NO_SANDBOX=true yarn test -m unit:*` // just the unit - test (filtering on name)
