@@ -35,11 +35,7 @@ What the Dockerfile and build.sh are accomplishing:
   ./build.sh
   ```
 
-Now you are in the container.  We must install with yarn on our first entry into the container and after any changes to package.json.  The first time this will download everything, but on subsequent container runs, we will have yarn cache because it is persisting as a docker volume.  This cache is different than our local machine yarn cache.
-
-```bash
-yarn install
-```
+Now you are in the container. Run the tests.
 
 ```bash
 ENVIRONMENT=PROD NO_SANDBOX=true yarn test
@@ -60,7 +56,9 @@ Here are some valid options.  See Ava doc for test running options. NO_SANDBOX=t
 - `ENVIRONMENT=PROD NO_SANDBOX=true yarn test -m input*` // just run the input test (filtering on name)
 - `ENVIRONMENT=PROD NO_SANDBOX=true yarn test -m navigate*` // just run the navigate tests (filtering on name)
 
-## To use locally - deprecated
+## To use locally
+
+> use if you watch to watch locally `HEADLESS=false`
 
 - use homebrew or nvm to install node 
 
